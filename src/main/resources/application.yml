@@ -1,0 +1,32 @@
+server:
+  port: 8099
+
+spring:
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: test-service
+          uri: lb://test-service
+          predicates:
+            - Path=/test/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+#          issuer-uri: http://localhost:8080/auth/realms/demo
+          jwk-set-uri: http://localhost:8080/auth/realms/demo/protocol/openid-connect/certs
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    appname: ${spring.application.name}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://library-registry-service:8761/eureka
