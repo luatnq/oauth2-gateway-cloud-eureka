@@ -1,5 +1,5 @@
 server:
-  port: 8099
+  port: 8092
 
 spring:
   main:
@@ -13,13 +13,16 @@ spring:
         - id: test-service
           uri: lb://test-service
           predicates:
-            - Path=/test/**
+            - Path=/test-service/*
+          filters:
+            - RewritePath=/test-service/, /test/
+
   security:
     oauth2:
       resourceserver:
         jwt:
-#          issuer-uri: http://localhost:8080/auth/realms/demo
-          jwk-set-uri: http://localhost:8080/auth/realms/demo/protocol/openid-connect/certs
+          issuer-uri: http://keycloak.aibles.tk/auth/realms/master
+#          jwk-set-uri: http://localhost:8080/auth/realms/demo/protocol/openid-connect/certs
 
 eureka:
   instance:
